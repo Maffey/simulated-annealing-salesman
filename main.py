@@ -35,7 +35,7 @@ for edge in edges_odd_index:
 # Additional helper functions
 
 # Initiate variables
-number_of_cities = 100
+number_of_cities = 10
 # Generate random cities and a random tour
 cities = [random.sample(range(100), 2) for x in range(number_of_cities)]
 tour = random.sample(range(number_of_cities), number_of_cities)
@@ -56,9 +56,7 @@ for temperature in temperature_flow:
 
     # TODO: Consider making the new_tour simpler
     # Create a new tour where the two generated cities are swapped in order on the tour.
-    new_tour = tour[:first_city] + tour[second_city:second_city + 1] + tour[first_city + 1:second_city] + tour[
-                                                                                                          first_city:first_city + 1] + tour[
-                                                                                                                                       second_city + 1:]
+    new_tour = tour[:first_city] + tour[second_city:second_city + 1] + tour[first_city + 1:second_city] + tour[first_city:first_city + 1] + tour[second_city + 1:]
 
     # Calculate the cost (length) of the path on our old tour and a new one.
     old_distances = sum([math.sqrt(sum(
@@ -75,5 +73,5 @@ for temperature in temperature_flow:
 
 # After the temperature drops to zero and the algorithm stops, plot the map of the cities and the path on the diagram.
 plt.plot([cities[tour[i % number_of_cities]][0] for i in range(number_of_cities + 1)],
-         [cities[tour[i % number_of_cities]][1] for i in range(number_of_cities + 1)], 'xb-')
+         [cities[tour[i % number_of_cities]][1] for i in range(number_of_cities + 1)], 'go--')
 plt.show()
