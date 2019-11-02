@@ -23,3 +23,14 @@ class Graph:
         self.edges[to_node].append(from_node)
         self.weights[(from_node, to_node)] = weight
         self.weights[(to_node, from_node)] = weight
+
+
+'''
+Code for operating on graphs. Not used in annealing approach.
+# Initiate the main graph
+graph = Graph()
+
+# Set up graph with edges
+for edge in edges_odd_index:
+    graph.add_edge(*edge)
+'''
