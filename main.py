@@ -6,9 +6,23 @@ import random
 
 # SIMULATED ANNEALING APPROACH
 
-# Our cities from A to E respectively, for student's index XXX7
-cities = [[1, 2], [3, 1], [3, 6], [6, 7], [5, 2]]
-number_of_cities = len(cities)
+custom_path = input("Do you want to insert custom values? [y/N]: ")
+if custom_path == "y":
+    print("Creating custom map...")
+    cities = []
+    number_of_cities = int(input("Provide number of cities: "))
+    for custom_city in range(number_of_cities):
+        print(f"==City: {custom_city}. ==")
+        cord_x = int(input(f"Please provide X for the {custom_city}. city: "))
+        cord_y = int(input(f"Please provide Y for the {custom_city}. city: "))
+        cities.append([cord_x, cord_y])
+else:
+    print("Default values initialized.")
+    # Our cities from A to E respectively, for student's index XXX7
+    cities = [[1, 2], [3, 1], [3, 6], [6, 7], [5, 2]]
+    number_of_cities = len(cities)
+
+# Rescale cities so the algorithm works properly.
 
 xmin = min(pair[0] for pair in cities)
 xmax = max(pair[0] for pair in cities)
@@ -24,8 +38,6 @@ def transform(pair):
 
 
 rescaled_cities = [transform(b) for b in cities]
-
-cities = rescaled_cities
 
 # If we need to test on random amount of cities, use the line below
 # cities = [random.sample(range(15), 2) for x in range(number_of_cities)]
@@ -53,10 +65,13 @@ for temperature in temperature_flow:
 
     # Calculate the cost (length) of the path on our old tour and a new one.
     old_distances_trace = [math.sqrt(sum(
-        [(cities[tour[(k + 1) % number_of_cities]][d] - cities[tour[k % number_of_cities]][d]) ** 2 for d in range(2)]))
+        [(rescaled_cities[tour[(k + 1) % number_of_cities]][d] - rescaled_cities[tour[k % number_of_cities]][d]) ** 2
+         for d in range(2)]))
         for k in [second_city, second_city - 1, first_city, first_city - 1]]
+
     new_distances_trace = [math.sqrt(sum(
-        [(cities[new_tour[(k + 1) % number_of_cities]][d] - cities[new_tour[k % number_of_cities]][d]) ** 2 for d in
+        [(rescaled_cities[new_tour[(k + 1) % number_of_cities]][d] - rescaled_cities[new_tour[k % number_of_cities]][
+            d]) ** 2 for d in
          range(2)])) for k in [second_city, second_city - 1, first_city, first_city - 1]]
     old_distances = sum(old_distances_trace)
     new_distances = sum(new_distances_trace)
@@ -66,7 +81,15 @@ for temperature in temperature_flow:
     if math.exp((old_distances - new_distances) / temperature) > random.random():
         tour = copy.copy(new_tour)
 
-# After the temperature drops to zero and the algorithm stops, plot the map of the cities and the path on the diagram.
-plt.plot([cities[tour[i % number_of_cities]][0] for i in range(number_of_cities + 1)],
-         [cities[tour[i % number_of_cities]][1] for i in range(number_of_cities + 1)], 'go--')
+# After the temperature drops to zero and the algorithm stops, print out our path and its final cost.
+print("Tour: ", tour)
+total_path = sum([math.sqrt(sum(
+    [(rescaled_cities[tour[(k + 1) % number_of_cities]][d] - rescaled_cities[tour[k % number_of_cities]][d]) ** 2 for d
+     in range(2)]))
+    for k in tour])
+print("Total cost of the path (normalized): ", total_path)
+
+# Plot the map of the cities and the path on the diagram for further convenience.
+plt.plot([rescaled_cities[tour[i % number_of_cities]][0] for i in range(number_of_cities + 1)],
+         [rescaled_cities[tour[i % number_of_cities]][1] for i in range(number_of_cities + 1)], 'go--')
 plt.show()

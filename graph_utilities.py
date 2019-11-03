@@ -7,7 +7,6 @@ def vector_length(from_node, to_node):
     x2, y2 = to_node
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
-
 def calculate_edges(points):
     edges = []
     for key_from in points:
