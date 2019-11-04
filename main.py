@@ -1,8 +1,9 @@
 import copy
 import math
+import random
+
 import matplotlib.pyplot as plt
 import numpy
-import random
 
 
 def seg_len(first_point, second_point):
@@ -11,8 +12,8 @@ def seg_len(first_point, second_point):
 
 # SIMULATED ANNEALING APPROACH
 
-custom_path = input("Do you want to insert custom values? [y/N]: ")
-if custom_path == "y":
+custom_path = input("Do you want to insert custom, random or default values? [c/r/D]: ")
+if custom_path == "c":
     print("Creating custom map...")
     cities = []
     number_of_cities = int(input("Provide number of cities: "))
@@ -21,6 +22,10 @@ if custom_path == "y":
         cord_x = int(input(f"Please provide X for the {custom_city}. city: "))
         cord_y = int(input(f"Please provide Y for the {custom_city}. city: "))
         cities.append([cord_x, cord_y])
+elif custom_path == "r":
+    print("Creating random map...")
+    number_of_cities = int(input("Provide number of cities: "))
+    cities = [random.sample(range(100), 2) for x in range(number_of_cities)]
 else:
     print("Default values initialized.")
     # Our cities from A to E respectively, for student's index XXX7
@@ -70,18 +75,23 @@ for temperature in temperature_flow:
     new_tour = copy.copy(tour)
     new_tour[first_city], new_tour[second_city] = new_tour[second_city], new_tour[first_city]
 
-    # Calculate the cost (length) of the path on our old tour and a new one.
+    """
+    Calculate the cost (length) of the path on our old tour and a new one.
+    The modulo part considers the part where there might be a path where one city_index is out of bound.
+    If it is, then it connects to the last city (if it's out of bound on the left side of the array)
+    or first city (if it's out of bound on the right side of the array)
+    """
     old_distances_paths = []
-    for k in [second_city, second_city - 1, first_city, first_city - 1]:
-        distance = seg_len(rescaled_cities[tour[(k + 1) % number_of_cities]],
-                           rescaled_cities[tour[k % number_of_cities]])
+    for city_index in [second_city, second_city - 1, first_city, first_city - 1]:
+        distance = seg_len(rescaled_cities[tour[(city_index + 1) % number_of_cities]],
+                           rescaled_cities[tour[city_index % number_of_cities]])
         old_distances_paths.append(distance)
     old_distance = sum(old_distances_paths)
 
     new_distances_paths = []
-    for k in [second_city, second_city - 1, first_city, first_city - 1]:
-        distance = seg_len(rescaled_cities[new_tour[(k + 1) % number_of_cities]],
-                           rescaled_cities[new_tour[k % number_of_cities]])
+    for city_index in [second_city, second_city - 1, first_city, first_city - 1]:
+        distance = seg_len(rescaled_cities[new_tour[(city_index + 1) % number_of_cities]],
+                           rescaled_cities[new_tour[city_index % number_of_cities]])
         new_distances_paths.append(distance)
     new_distance = sum(new_distances_paths)
 
@@ -94,13 +104,15 @@ for temperature in temperature_flow:
 print("Tour: ", tour)
 
 final_path = []
-for k in tour:
-    distance = seg_len(rescaled_cities[tour[(k + 1) % number_of_cities]], rescaled_cities[tour[k % number_of_cities]])
+for city_index in tour:
+    distance = seg_len(rescaled_cities[tour[(city_index + 1) % number_of_cities]],
+                       rescaled_cities[tour[city_index % number_of_cities]])
     final_path.append(distance)
 final_path_cost = sum(final_path)
 print("Total cost of the path (normalized): ", final_path_cost)
 
 # Plot the map of the cities and the path on the diagram for further convenience.
+# The modulo part considers the part where the index might be the last city, then it connects to the first city.
 plt.plot([rescaled_cities[tour[i % number_of_cities]][0] for i in range(number_of_cities + 1)],
          [rescaled_cities[tour[i % number_of_cities]][1] for i in range(number_of_cities + 1)], 'go--')
 plt.show()
