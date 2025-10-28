@@ -560,6 +560,10 @@ source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },
+]
+
+[package.optional-dependencies]
+visual = [
     { name = "pyqt6" },
 ]
 
@@ -567,8 +571,9 @@ dependencies = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=2.3.4" },
-    { name = "pyqt6", specifier = ">=6.10.0" },
+    { name = "pyqt6", marker = "extra == 'visual'", specifier = ">=6.10.0" },
 ]
+provides-extras = ["visual"]
 
 [[package]]
 name = "six"
