@@ -12,4 +12,4 @@ ENV UV_LINK_MODE=copy
 # Install dependencies
 RUN uv sync --locked
 
-CMD ["uv", "run", "sas"]
+CMD ["uv", "run", "sas", "D"]

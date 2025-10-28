@@ -14,7 +14,7 @@ visual = [
 ]
 
 [project.scripts]
-sas = "simulated_annealing_salesman:main"
+sas = "simulated_annealing_salesman.main:main"
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
