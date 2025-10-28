@@ -32,6 +32,8 @@ else:
     cities = [[1, 2], [3, 1], [3, 6], [6, 7], [5, 2]]
     number_of_cities = len(cities)
 
+print(f"Cities: {cities}")
+
 # Rescale cities so the algorithm works more efficiently. Otherwise might sometimes be ineffective.
 
 xmin = min(pair[0] for pair in cities)

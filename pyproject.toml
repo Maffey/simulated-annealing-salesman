@@ -3,4 +3,8 @@ name = "simulated-annealing-salesman"
 version = "0.1.0"
 description = "Travelling salesman problem with simualted annealing."
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+    "pyqt6>=6.10.0",
+]
