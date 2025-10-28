@@ -1,6 +1,21 @@
 [project]
 name = "simulated-annealing-salesman"
 version = "0.1.0"
-description = "Travelling salesman problem with simualted annealing."
+description = "Simulated Annealing algorithm implemented in Python to solve the Travelling Salesman Problem."
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+]
+
+[project.optional-dependencies]
+visual = [
+    "pyqt6>=6.10.0",
+]
+
+[project.scripts]
+sas = "simulated_annealing_salesman.main:main"
+
+[build-system]
+requires = ["uv_build>=0.9.5,<0.10.0"]
+build-backend = "uv_build"
